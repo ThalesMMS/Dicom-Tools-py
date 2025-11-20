@@ -2,14 +2,14 @@
 
 Coleção abrangente de utilitários Python para trabalhar com arquivos DICOM. Este repositório fornece **17 scripts especializados** para inspeção, descompressão, recodificação, anonimização, conversão, validação, organização, networking (PACS) e interface web, todos baseados na biblioteca [`pydicom`](https://pydicom.github.io/).
 
-## ✨ Novidades v1.0.0
+## Novidades v1.0.0
 
-- 🎁 **Empacotamento como módulo Python** - Instale via `pip install` com comandos CLI globais
-- 🌐 **Interface Web** - Visualize e processe DICOM files no navegador
-- 🏥 **DICOM Networking** - Query (C-FIND) e Retrieve (C-MOVE/C-GET) de servidores PACS
-- 📦 **17 comandos CLI** - Todos os scripts disponíveis como comandos globais
+- **Empacotamento como módulo Python** - Instale via `pip install` com comandos CLI globais
+- **Interface Web** - Visualize e processe DICOM files no navegador
+- **DICOM Networking** - Query (C-FIND) e Retrieve (C-MOVE/C-GET) de servidores PACS
+- **17 comandos CLI** - Todos os scripts disponíveis como comandos globais
 
-## 📑 Índice
+## Índice
 - [Scripts Disponíveis](#scripts-disponíveis)
 - [Instalação](#instalação)
 - [Guia de Uso Detalhado](#guia-de-uso-detalhado)
@@ -22,48 +22,48 @@ Coleção abrangente de utilitários Python para trabalhar com arquivos DICOM. E
 
 ## Scripts Disponíveis
 
-### 📋 Inspeção e Metadados
+### Inspeção e Metadados
 1. **`extract_metadata.py`** - Extrai e exibe metadados DICOM detalhados organizados por categoria
 2. **`dicom_info.py`** - Visualização rápida de informações resumidas de arquivos DICOM
 3. **`comparar_dicom.py`** - Compara metadados entre dois arquivos DICOM
 
-### 🔄 Conversão e Recodificação
+### Conversão e Recodificação
 4. **`reencode_dicom.py`** - Reescreve DICOM com transfer syntax explicit little-endian
 5. **`decompress_dicom.py`** - Descomprime arquivos DICOM comprimidos
 6. **`convert_to_image.py`** - Converte DICOM para PNG/JPEG com windowing adequado
 
-### 🔒 Privacidade e Anonimização
+### Privacidade e Anonimização
 7. **`anonymize_dicom.py`** - Anonimiza arquivos DICOM removendo PHI (HIPAA-compliant)
 
-### ✅ Validação e Análise
+### Validação e Análise
 8. **`validate_dicom.py`** - Valida conformidade DICOM e integridade de dados
 9. **`pixel_stats.py`** - Analisa estatísticas detalhadas de pixel data com histogramas
 
-### ✏️ Modificação e Organização
+### Modificação e Organização
 10. **`modify_tags.py`** - Modifica tags DICOM específicas (modo interativo ou batch)
 11. **`organize_dicom.py`** - Organiza arquivos em hierarquia estruturada
 
-### 🔍 Pesquisa e Filtragem
+### Pesquisa e Filtragem
 12. **`search_dicom.py`** - Pesquisa arquivos DICOM por critérios de metadados
 
-### 🎞️ Multi-frame
+### Multi-frame
 13. **`split_multiframe.py`** - Divide DICOM multi-frame em arquivos single-frame
 
-### 📦 Processamento em Lote
+### Processamento em Lote
 14. **`batch_process.py`** - Processa múltiplos arquivos com várias operações
 
-### 🌐 DICOM Networking (NOVO!)
+### DICOM Networking
 15. **`dicom_query.py`** - Query PACS usando C-FIND (pesquisa de estudos)
 16. **`dicom_retrieve.py`** - Retrieve de PACS usando C-MOVE/C-GET (busca de imagens)
 
-### 🖥️ Interface Web (NOVO!)
+### Interface Web
 17. **`web_interface.py`** - Servidor web Flask para visualização e processamento DICOM
 
 ---
 
 ## Instalação
 
-### 🚀 Instalação Rápida (Módulo Python)
+### Instalação Rápida (Módulo Python)
 
 ```bash
 # Instalar do repositório Git
@@ -87,7 +87,7 @@ dicom-web  # Inicia interface web
 dicom-query -H pacs.server.com -p 11112 --patient-name "Silva*"
 ```
 
-### 📋 Requisitos
+### Requisitos
 
 - **Python 3.9 ou superior**
 - **pydicom** >= 2.3.0 - Biblioteca core para DICOM
@@ -97,7 +97,7 @@ dicom-query -H pacs.server.com -p 11112 --patient-name "Silva*"
 - **flask** >= 2.0.0 - Interface web
 - **flask-cors** >= 3.0.0 - CORS para web
 
-### 🛠️ Instalação Manual (Scripts Standalone)
+### Instalação Manual (Scripts Standalone)
 
 Se preferir usar scripts Python diretamente sem instalar o módulo:
 
@@ -118,7 +118,7 @@ pip install -r requirements.txt
 python DICOM_reencoder/dicom_info.py arquivo.dcm
 ```
 
-### 📦 Comandos CLI Instalados
+### Comandos CLI Instalados
 
 Após `pip install`, 17 comandos estarão disponíveis:
 
@@ -142,13 +142,13 @@ Após `pip install`, 17 comandos estarão disponíveis:
 | **`dicom-retrieve`** | **Retrieve de PACS (C-MOVE/C-GET)** |
 | **`dicom-web`** | **Interface Web** |
 
-📖 **Guia completo de instalação:** [INSTALLATION.md](INSTALLATION.md)
+**Guia completo de instalação:** [INSTALLATION.md](INSTALLATION.md)
 
 ---
 
 ## Guia de Uso Detalhado
 
-### 📋 Inspeção e Metadados
+### Inspeção e Metadados
 
 #### 1. `extract_metadata.py` - Extração Detalhada de Metadados
 
@@ -203,7 +203,7 @@ python DICOM_reencoder/comparar_dicom.py
 
 ---
 
-### 🔄 Conversão e Recodificação
+### Conversão e Recodificação
 
 #### 4. `reencode_dicom.py` - Recodificação
 
@@ -262,7 +262,7 @@ python DICOM_reencoder/convert_to_image.py multiframe.dcm png --all-frames
 
 ---
 
-### 🔒 Privacidade e Anonimização
+### Privacidade e Anonimização
 
 #### 7. `anonymize_dicom.py` - Anonimização HIPAA-Compliant
 
@@ -294,7 +294,7 @@ python DICOM_reencoder/anonymize_dicom.py entrada.dcm saida_anon.dcm
 
 ---
 
-### ✅ Validação e Análise
+### Validação e Análise
 
 #### 8. `validate_dicom.py` - Validação Completa
 
@@ -305,13 +305,13 @@ python DICOM_reencoder/validate_dicom.py arquivo.dcm
 ```
 
 **Verificações:**
-- ✓ Estrutura do arquivo e conformidade DICOM
-- ✓ Presença de tags obrigatórias (Type 1 e Type 2)
-- ✓ Formato e validade de UIDs
-- ✓ Consistência de pixel data (dimensões, atributos)
-- ✓ Validação de formato de datas e horários
-- ✓ Verificação de Transfer Syntax
-- ✓ File Meta Information Header
+- Estrutura do arquivo e conformidade DICOM
+- Presença de tags obrigatórias (Type 1 e Type 2)
+- Formato e validade de UIDs
+- Consistência de pixel data (dimensões, atributos)
+- Validação de formato de datas e horários
+- Verificação de Transfer Syntax
+- File Meta Information Header
 
 **Saída:** Relatório detalhado com informações, avisos e erros.
 
@@ -351,7 +351,7 @@ python DICOM_reencoder/pixel_stats.py arquivo1.dcm --compare arquivo2.dcm
 
 ---
 
-### ✏️ Modificação e Organização
+### Modificação e Organização
 
 #### 10. `modify_tags.py` - Modificação de Tags
 
@@ -415,7 +415,7 @@ python DICOM_reencoder/organize_dicom.py -s /origem -d /destino -m modality
 
 ---
 
-### 🔍 Pesquisa e Filtragem
+### Pesquisa e Filtragem
 
 #### 12. `search_dicom.py` - Pesquisa por Critérios
 
@@ -456,7 +456,7 @@ python DICOM_reencoder/search_dicom.py -d /caminho/dicoms --modality CT --format
 
 ---
 
-### 🎞️ Multi-frame
+### Multi-frame
 
 #### 13. `split_multiframe.py` - Divisão de Multi-frame
 
@@ -490,7 +490,7 @@ python DICOM_reencoder/split_multiframe.py multiframe.dcm --info
 
 ---
 
-### 📦 Processamento em Lote
+### Processamento em Lote
 
 #### 14. `batch_process.py` - Operações em Batch
 
@@ -538,7 +538,7 @@ dicom-batch -d /caminho/dicoms -o anonymize --output-dir ./anonimizados
 
 ---
 
-### 🌐 DICOM Networking (NOVO!)
+### DICOM Networking
 
 #### 15. `dicom_query.py` - Query PACS (C-FIND)
 
@@ -634,7 +634,7 @@ dicom-retrieve -H pacs.hospital.com -p 11112 \
 
 ---
 
-### 🖥️ Interface Web (NOVO!)
+### Interface Web
 
 #### 17. `web_interface.py` - Servidor Web Flask
 
@@ -661,32 +661,32 @@ dicom-web --debug
 
 **Funcionalidades da Interface Web:**
 
-1. **📤 Upload de Arquivos**
+1. **Upload de Arquivos**
    - Drag & drop de arquivos DICOM
    - Validação automática
    - Visualização de informações básicas
 
-2. **🖼️ Visualizador de Imagens**
+2. **Visualizador de Imagens**
    - Renderização de pixel data com windowing
    - Suporte para MONOCHROME1/MONOCHROME2
    - Visualização de multi-frame (primeiro frame)
 
-3. **📊 Metadados**
+3. **Metadados**
    - Visualização de metadados completos
    - Organização por categorias
    - Patient, Study, Series, Image info
 
-4. **📈 Estatísticas**
+4. **Estatísticas**
    - Estatísticas de pixel data
    - Min, Max, Mean, Median, Std Dev
    - Total de pixels e valores únicos
 
-5. **🔒 Anonimização**
+5. **Anonimização**
    - Anonimização com um clique
    - Download automático do arquivo anonimizado
    - Remoção de PHI completa
 
-6. **✅ Validação**
+6. **Validação**
    - Validação DICOM em tempo real
    - Exibição de erros e warnings
    - Verificação de conformidade
@@ -715,59 +715,59 @@ GET    /api/download/<filename> - Download de arquivo
 
 ## Funcionalidades
 
-### 📋 Extração de Metadados
+### Extração de Metadados
 - Exibição abrangente de metadados organizados por categoria
 - Informações de Paciente, Estudo, Série, Imagem e Equipamento
 - Detalhes de Transfer Syntax e Pixel Data
 - Comparação entre arquivos
 
-### 🔒 Anonimização
+### Anonimização
 - Remoção HIPAA-compliant de PHI (Protected Health Information)
 - Geração de IDs anônimos consistentes usando hashing
 - Deslocamento de datas preservando relações temporais
 - Regeneração de UIDs para privacidade
 - Remoção de tags privadas de fabricantes
 
-### 🔄 Conversão de Imagens
+### Conversão de Imagens
 - Exportação para PNG ou JPEG
 - Cálculo automático de windowing
 - Suporte para tags DICOM Window/Level
 - Processamento de multi-frame
 - Suporte MONOCHROME1/MONOCHROME2
 
-### ✅ Validação
+### Validação
 - Verificação de conformidade DICOM
 - Validação de tags obrigatórias (Type 1 e Type 2)
 - Verificação de formato de UIDs
 - Verificações de consistência de pixel data
 - Validação de formato de datas/horários
 
-### 📊 Análise de Pixel Data
+### Análise de Pixel Data
 - Estatísticas completas (min, max, mean, median, std, variance)
 - Análise de percentis
 - Histogramas visuais em texto
 - Comparação entre arquivos
 - Suporte para multi-frame
 
-### ✏️ Modificação e Organização
+### Modificação e Organização
 - Modificação interativa ou batch de tags
 - Organização automática por paciente/estudo/série/modalidade
 - Sanitização de nomes de arquivos
 - Modos copy ou move
 
-### 🔍 Pesquisa Avançada
+### Pesquisa Avançada
 - Pesquisa por múltiplos critérios
 - Suporte para wildcards e regex
 - Pesquisa por intervalo de datas
 - Múltiplos formatos de saída (table, list, csv)
 
-### 🎞️ Multi-frame
+### Multi-frame
 - Divisão em single-frames
 - Extração seletiva de frames
 - Preservação de metadados
 - Informações detalhadas de frames
 
-### 📦 Processamento em Lote
+### Processamento em Lote
 - Múltiplas operações em batch
 - Busca recursiva em diretórios
 - Rastreamento de progresso e erros
@@ -787,8 +787,8 @@ Dicom-Tools/
 │   ├── convert_to_image.py         # Conversão DICOM → PNG/JPEG
 │   ├── decompress_dicom.py         # Descompressão de DICOM
 │   ├── dicom_info.py               # Informações resumidas
-│   ├── dicom_query.py              # ✨ Query PACS (C-FIND)
-│   ├── dicom_retrieve.py           # ✨ Retrieve de PACS (C-MOVE/C-GET)
+│   ├── dicom_query.py              # Query PACS (C-FIND)
+│   ├── dicom_retrieve.py           # Retrieve de PACS (C-MOVE/C-GET)
 │   ├── extract_metadata.py         # Extração detalhada de metadados
 │   ├── modify_tags.py              # Modificação de tags DICOM
 │   ├── organize_dicom.py           # Organização estruturada
@@ -797,20 +797,20 @@ Dicom-Tools/
 │   ├── search_dicom.py             # Pesquisa por critérios
 │   ├── split_multiframe.py         # Divisão de multi-frame
 │   ├── validate_dicom.py           # Validação DICOM
-│   ├── web_interface.py            # ✨ Interface Web Flask
-│   └── web_templates/              # ✨ Templates HTML para web
+│   ├── web_interface.py            # Interface Web Flask
+│   └── web_templates/              # Templates HTML para web
 │       └── index.html
 │
-├── setup.py                        # ✨ Setup para instalação pip
-├── pyproject.toml                  # ✨ Configuração do projeto
-├── requirements.txt                # ✨ Dependências Python
-├── MANIFEST.in                     # ✨ Arquivos para distribuição
-├── INSTALLATION.md                 # ✨ Guia de instalação detalhado
+├── setup.py                        # Setup para instalação pip
+├── pyproject.toml                  # Configuração do projeto
+├── requirements.txt                # Dependências Python
+├── MANIFEST.in                     # Arquivos para distribuição
+├── INSTALLATION.md                 # Guia de instalação detalhado
 ├── README.md                       # Documentação principal
 └── LICENSE                         # Licença MIT
 ```
 
-### 📦 Empacotamento
+### Empacotamento
 
 O projeto está completamente empacotado e pronto para distribuição via PyPI:
 
@@ -824,14 +824,14 @@ O projeto está completamente empacotado e pronto para distribuição via PyPI:
 
 ## Próximos Passos
 
-### ✅ Implementado v1.0.0
-- [x] Empacotar utilitários como módulo Python ✨
-- [x] Entry points CLI para todos os scripts ✨
-- [x] Implementar DICOM query/retrieve (C-FIND, C-MOVE, C-GET) ✨
-- [x] Interface web para visualização DICOM ✨
-- [x] API REST para integração web ✨
+### Implementado v1.0.0
+- [x] Empacotar utilitários como módulo Python
+- [x] Entry points CLI para todos os scripts
+- [x] Implementar DICOM query/retrieve (C-FIND, C-MOVE, C-GET)
+- [x] Interface web para visualização DICOM
+- [x] API REST para integração web
 
-### 🔄 Em Progresso / Futuro
+### Em Progresso / Futuro
 - [ ] Adicionar testes automatizados com arquivos DICOM de amostra
 - [ ] Publicar no PyPI para instalação via `pip install dicom-tools`
 - [ ] Adicionar suporte para DICOM-RT (radioterapia)
