@@ -178,12 +178,19 @@ def anonymize_dicom(input_file, output_file=None, patient_prefix="ANON"):
         print(f"Error anonymizing DICOM file: {e}", file=sys.stderr)
         return None
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
         output_file = sys.argv[2] if len(sys.argv) > 2 else None
     else:
-        input_file = "1.dcm"
-        output_file = None
+        print("Usage: dicom-anonymize <input_file> [output_file]")
+        if os.path.exists("1.dcm"):
+            input_file = "1.dcm"
+            output_file = None
+        else:
+            sys.exit(1)
 
     anonymize_dicom(input_file, output_file)
+
+if __name__ == "__main__":
+    main()

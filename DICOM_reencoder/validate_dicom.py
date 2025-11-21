@@ -311,13 +311,20 @@ class DicomValidator:
             print("✓ VALIDATION PASSED - No errors or warnings")
         print(f"{'='*80}\n")
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
     else:
-        input_file = "1.dcm"
+        print("Usage: dicom-validate <input_file>")
+        if os.path.exists("1.dcm"):
+            input_file = "1.dcm"
+        else:
+            sys.exit(1)
 
     validator = DicomValidator()
     is_valid = validator.validate_file(input_file)
 
     sys.exit(0 if is_valid else 1)
+
+if __name__ == "__main__":
+    main()

@@ -7,6 +7,7 @@ in a structured format.
 
 import pydicom
 import sys
+import os
 from datetime import datetime
 
 def format_value(value):
@@ -143,10 +144,17 @@ def extract_metadata(input_file):
         print(f"Error reading DICOM file: {e}", file=sys.stderr)
         return None
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
     else:
-        input_file = "1.dcm"
+        print("Usage: dicom-extract-metadata <input_file>")
+        if os.path.exists("1.dcm"):
+            input_file = "1.dcm"
+        else:
+            sys.exit(1)
 
     extract_metadata(input_file)
+
+if __name__ == "__main__":
+    main()

@@ -175,7 +175,7 @@ def convert_all_frames(input_file, output_format='png'):
     except Exception as e:
         print(f"Error converting frames: {e}", file=sys.stderr)
 
-if __name__ == "__main__":
+def main():
     if len(sys.argv) > 1:
         input_file = sys.argv[1]
         output_format = sys.argv[2] if len(sys.argv) > 2 else 'png'
@@ -187,5 +187,9 @@ if __name__ == "__main__":
             output_file = sys.argv[3] if len(sys.argv) > 3 else None
             convert_dicom_to_image(input_file, output_file, output_format)
     else:
-        input_file = "1.dcm"
-        convert_dicom_to_image(input_file, output_format='png')
+        print("Usage: dicom-to-image <input_file> [output_format] [output_file/--all-frames]")
+        if os.path.exists("1.dcm"):
+             convert_dicom_to_image("1.dcm", output_format='png')
+
+if __name__ == "__main__":
+    main()

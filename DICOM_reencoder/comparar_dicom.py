@@ -1,5 +1,6 @@
 import pydicom
 import os
+import sys
 
 def extract_metadata(path):
     try:
@@ -30,16 +31,23 @@ def compare_metadata(metadata1, metadata2):
         marker = " <-- DIFFERENT" if value1 != value2 else ""
         print(f"{key:<30} {value1:<50} {value2}{marker}")
 
-if __name__ == "__main__":
-    file1 = "1.dcm"
-    file2 = "2.dcm"
+def main():
+    if len(sys.argv) > 2:
+        file1 = sys.argv[1]
+        file2 = sys.argv[2]
+    else:
+        file1 = "1.dcm"
+        file2 = "2.dcm"
 
     if not (os.path.exists(file1) and os.path.exists(file2)):
-        print("Error: Make sure '1.dcm' and '2.dcm' are in the same folder as the script.")
-        exit(1)
+        print(f"Error: Make sure '{file1}' and '{file2}' are in the same folder as the script.")
+        sys.exit(1)
 
     metadata1 = extract_metadata(file1)
     metadata2 = extract_metadata(file2)
 
     if metadata1 and metadata2:
         compare_metadata(metadata1, metadata2)
+
+if __name__ == "__main__":
+    main()

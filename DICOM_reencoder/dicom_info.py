@@ -209,7 +209,7 @@ def compare_files(file1, file2):
     except Exception as e:
         print(f"Error comparing files: {e}", file=sys.stderr)
 
-if __name__ == "__main__":
+def main():
     import argparse
 
     parser = argparse.ArgumentParser(description='Display DICOM file information')
@@ -224,3 +224,6 @@ if __name__ == "__main__":
         compare_files(args.file, args.compare)
     else:
         display_dicom_info(args.file, args.verbose)
+
+if __name__ == "__main__":
+    main()

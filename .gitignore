@@ -23,6 +23,7 @@ dist/
 
 # Project specific
 input/
+output/
 plan.md
 *.dcm
 GEMINI.md

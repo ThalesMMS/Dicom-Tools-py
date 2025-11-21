@@ -1,57 +1,82 @@
-# DICOM Library Testing Grounds
+# DICOM Tools & Testing Grounds
 
-This repository is dedicated to testing and experimenting with various Python DICOM libraries. The goal is to provide simple, isolated test scripts to demonstrate and verify functionalities of:
+A comprehensive Python repository serving two main purposes:
+1.  **Functional Toolkit:** A suite of 17+ command-line interface (CLI) tools for inspecting, modifying, anonymizing, and managing DICOM files, plus a web interface.
+2.  **Testing Grounds:** A collection of isolated scripts to demonstrate and verify the capabilities of major Python DICOM libraries (`pydicom`, `pynetdicom`, `gdcm`, `SimpleITK`, `dicom-numpy`).
 
-- **pydicom**: Reading, writing, and modifying DICOM tags.
-- **pynetdicom**: Networking (SCU/SCP) capabilities.
-- **gdcm-python**: Decompression and advanced DICOM handling.
-- **SimpleITK**: Image IO and basic processing.
-- **dicom-numpy**: Converting DICOM datasets to NumPy arrays.
+## 🛠 Installation
 
-## Setup
+To use the CLI tools or run the tests, install the package and its dependencies:
 
-1.  **Install Dependencies**:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *(Note: You may need to install `gdcm` separately if not available on PyPI for your platform).*
+```bash
+# Clone the repository
+git clone https://github.com/ThalesMMS/Dicom-Tools-py.git
+cd Dicom-Tools-py
 
-2.  **Prepare Input Data**:
-    Place your test `.dcm` files in the `input/` directory.
-    ```bash
-    mkdir input
-    # Copy your .dcm files here
-    ```
+# Install in editable mode (reccomended for development)
+pip install -e .
+
+# Or install dependencies directly
+pip install -r requirements.txt
+```
+
+*Note: `python-gdcm` might need to be installed separately depending on your OS, though it is included in the installation steps if available via pip.*
+
+## 🖥️ CLI Tools Usage
+
+Once installed, the following commands are available globally in your terminal:
+
+### Inspection & Analysis
+- `dicom-info <file>`: Quick summary of a DICOM file.
+- `dicom-extract-metadata <file>`: Detailed metadata extraction.
+- `dicom-pixel-stats <file>`: Analyze pixel value statistics and histograms.
+- `dicom-compare <file1> <file2>`: Compare tags between two files.
+- `dicom-validate <file>`: Validate compliance and data integrity.
+- `dicom-search -d <dir> ...`: Search for files matching specific metadata criteria.
+
+### Manipulation & Processing
+- `dicom-anonymize <input> [output]`: Remove PHI (HIPAA-compliant).
+- `dicom-to-image <file> [format]`: Convert DICOM to PNG/JPEG.
+- `dicom-modify <file> -t Tag=Value`: Modify tags interactively or in batch.
+- `dicom-reencode <file>`: Rewrite file with Explicit VR Little Endian.
+- `dicom-decompress <file>`: Decompress pixel data.
+- `dicom-split-multiframe <file>`: Split multi-frame files into single frames.
+- `dicom-organize -s <src> -d <dst> ...`: Organize files into folders (Patient/Study/Series).
+
+### PACS Networking
+- `dicom-query ...`: Perform C-FIND queries against a PACS server.
+- `dicom-retrieve ...`: Retrieve studies via C-MOVE or C-GET.
+
+### Web Interface
+- `dicom-web`: Launch a local Flask web server for visual interaction.
+
+## 🧪 Library Testing Grounds
+
+The `tests/` directory contains isolated scripts to verify specific library features. To run them, place test DICOM files in `input/` and run:
+
+```bash
+# Test pydicom (Read/Write/Modify)
+python3 tests/test_pydicom.py
+
+# Test pynetdicom (C-ECHO SCU/SCP)
+python3 tests/test_pynetdicom.py
+
+# Test GDCM (Decompression)
+python3 tests/test_gdcm.py
+
+# Test SimpleITK (Filtering)
+python3 tests/test_simpleitk.py
+
+# Test dicom-numpy (Volume construction)
+python3 tests/test_dicom_numpy.py
+```
 
 ## Structure
 
-- `input/`: Directory for test DICOM files (ignored by git).
-- `tests/`: (Planned) Directory containing test scripts for each library.
+*   `DICOM_reencoder/`: Source code for the CLI tools package.
+*   `tests/`: Unit tests and library verification scripts.
+*   `input/`: Local directory for test images (ignored by git).
+*   `output/`: Local directory for processing results (ignored by git).
 
-## Usage
-
-
-
-Refer to individual scripts (to be implemented) for specific library tests.
-
-
-
-## Included DICOM Tools
-
-This repository also houses a comprehensive suite of CLI utilities (located in `DICOM_reencoder/`) for working with DICOM files. These tools are preserved for legacy support and testing verification.
-
-
-
-### Available Scripts
-
-*   **Inspection**: `extract_metadata.py`, `dicom_info.py`, `comparar_dicom.py`
-
-*   **Conversion**: `reencode_dicom.py`, `decompress_dicom.py`, `convert_to_image.py`
-
-*   **Privacy/Validation**: `anonymize_dicom.py`, `validate_dicom.py`, `pixel_stats.py`
-
-*   **Management**: `modify_tags.py`, `organize_dicom.py`, `search_dicom.py`, `split_multiframe.py`, `batch_process.py`
-
-*   **Networking**: `dicom_query.py` (C-FIND), `dicom_retrieve.py` (C-MOVE/C-GET)
-
-*   **Web**: `web_interface.py` (Flask UI)
+## License
+MIT
