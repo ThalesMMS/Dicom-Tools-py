@@ -11,6 +11,7 @@ __license__ = 'MIT'
 
 # Import main functions for programmatic use
 from . import (
+    core,
     extract_metadata,
     dicom_info,
     comparar_dicom,
@@ -42,4 +43,5 @@ __all__ = [
     'search_dicom',
     'split_multiframe',
     'batch_process',
+    'core',
 ]

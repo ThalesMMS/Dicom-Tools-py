@@ -43,6 +43,15 @@ dev = [
     "pytest-cov>=3.0.0",
     "black>=22.0.0",
     "flake8>=4.0.0",
+    "gdcm>=3.0.0",
+    "SimpleITK>=2.2.0",
+    "dicom-numpy>=0.5.0",
+]
+
+extra = [
+    "gdcm>=3.0.0",
+    "SimpleITK>=2.2.0",
+    "dicom-numpy>=0.5.0",
 ]
 
 [project.urls]
@@ -68,9 +77,10 @@ dicom-batch = "DICOM_reencoder.batch_process:main"
 dicom-query = "DICOM_reencoder.dicom_query:main"
 dicom-retrieve = "DICOM_reencoder.dicom_retrieve:main"
 dicom-web = "DICOM_reencoder.web_interface:main"
+dicom-tools = "DICOM_reencoder.cli:main"
 
 [tool.setuptools]
-packages = ["DICOM_reencoder"]
+packages = ["DICOM_reencoder", "DICOM_reencoder.core"]
 
 [tool.setuptools.package-data]
 DICOM_reencoder = ["web_templates/*", "web_static/*"]

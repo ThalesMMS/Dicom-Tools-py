@@ -5,6 +5,8 @@ This script checks DICOM files for proper structure, required tags,
 and data integrity.
 """
 
+from typing import Optional
+
 import pydicom
 import sys
 import os
@@ -13,6 +15,11 @@ class DicomValidator:
     """DICOM file validator."""
 
     def __init__(self):
+        self.errors = []
+        self.warnings = []
+        self.info = []
+
+    def _reset(self):
         self.errors = []
         self.warnings = []
         self.info = []
@@ -27,9 +34,7 @@ class DicomValidator:
         Returns:
             True if valid (no errors), False otherwise
         """
-        self.errors = []
-        self.warnings = []
-        self.info = []
+        self._reset()
 
         print(f"\n{'='*80}")
         print(f"DICOM File Validation")
@@ -56,10 +61,43 @@ class DicomValidator:
             self.errors.append(f"Failed to read DICOM file: {e}")
             return False
 
-        # Validate DICOM preamble and prefix
+        self._validate_preamble(file_path)
+        return self.validate_dataset(dataset, file_path=file_path)
+
+    def validate_dataset(self, dataset: pydicom.dataset.Dataset, *, file_path: Optional[str] = None,
+                         display: bool = True) -> bool:
+        """Validate an in-memory dataset; optionally reference its source path."""
+        # Do not reset if called from validate_file which already wiped state
+        if not self.info and not self.errors and not self.warnings:
+            self._reset()
+
+        if file_path:
+            self._validate_preamble(file_path)
+
+        if not hasattr(dataset, 'file_meta'):
+            self.errors.append("Missing file meta information header")
+        else:
+            self._validate_file_meta(dataset.file_meta)
+
+        self._validate_required_elements(dataset)
+        self._validate_sop_class(dataset)
+        self._validate_transfer_syntax(dataset)
+
+        if 'PixelData' in dataset:
+            self._validate_pixel_data(dataset)
+
+        self._validate_uids(dataset)
+        self._validate_dates_times(dataset)
+
+        if display:
+            self._print_results()
+
+        return len(self.errors) == 0
+
+    def _validate_preamble(self, file_path: str):
         try:
             with open(file_path, 'rb') as f:
-                preamble = f.read(128)
+                f.read(128)
                 prefix = f.read(4)
 
                 if prefix != b'DICM':
@@ -68,36 +106,6 @@ class DicomValidator:
                     self.info.append("✓ Valid DICOM prefix found")
         except Exception as e:
             self.warnings.append(f"Could not check DICOM preamble: {e}")
-
-        # Check for file meta information
-        if not hasattr(dataset, 'file_meta'):
-            self.errors.append("Missing file meta information header")
-        else:
-            self._validate_file_meta(dataset.file_meta)
-
-        # Validate required Type 1 elements (must be present)
-        self._validate_required_elements(dataset)
-
-        # Validate SOP Class
-        self._validate_sop_class(dataset)
-
-        # Validate transfer syntax
-        self._validate_transfer_syntax(dataset)
-
-        # Validate pixel data if present
-        if 'PixelData' in dataset:
-            self._validate_pixel_data(dataset)
-
-        # Validate UIDs
-        self._validate_uids(dataset)
-
-        # Validate dates and times
-        self._validate_dates_times(dataset)
-
-        # Print results
-        self._print_results()
-
-        return len(self.errors) == 0
 
     def _validate_file_meta(self, file_meta):
         """Validate file meta information."""

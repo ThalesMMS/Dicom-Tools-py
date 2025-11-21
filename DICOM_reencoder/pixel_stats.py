@@ -11,50 +11,7 @@ import os
 import argparse
 import numpy as np
 
-def calculate_statistics(pixel_array):
-    """
-    Calculate comprehensive statistics for pixel data.
-
-    Args:
-        pixel_array: NumPy array of pixel data
-
-    Returns:
-        Dictionary of statistics
-    """
-    stats = {}
-
-    # Flatten array for overall statistics
-    flat_pixels = pixel_array.flatten()
-
-    # Basic statistics
-    stats['min'] = int(np.min(flat_pixels))
-    stats['max'] = int(np.max(flat_pixels))
-    stats['mean'] = float(np.mean(flat_pixels))
-    stats['median'] = float(np.median(flat_pixels))
-    stats['std'] = float(np.std(flat_pixels))
-    stats['variance'] = float(np.var(flat_pixels))
-
-    # Percentiles
-    stats['p1'] = float(np.percentile(flat_pixels, 1))
-    stats['p5'] = float(np.percentile(flat_pixels, 5))
-    stats['p25'] = float(np.percentile(flat_pixels, 25))
-    stats['p75'] = float(np.percentile(flat_pixels, 75))
-    stats['p95'] = float(np.percentile(flat_pixels, 95))
-    stats['p99'] = float(np.percentile(flat_pixels, 99))
-
-    # Range and spread
-    stats['range'] = stats['max'] - stats['min']
-    stats['iqr'] = stats['p75'] - stats['p25']  # Interquartile range
-
-    # Count statistics
-    stats['total_pixels'] = len(flat_pixels)
-    stats['unique_values'] = len(np.unique(flat_pixels))
-
-    # Zero pixels (if applicable)
-    stats['zero_pixels'] = int(np.sum(flat_pixels == 0))
-    stats['zero_percent'] = (stats['zero_pixels'] / stats['total_pixels']) * 100
-
-    return stats
+from .core.images import calculate_statistics
 
 def display_statistics(input_file, frame_number=0, show_histogram=False):
     """
