@@ -1,283 +1,140 @@
-# Guia de Instalação - DICOM Tools
+# Installation Guide - DICOM Tools
 
-## Métodos de Instalação
+English-only guide for installing the CLI tools, optional features, and validating that everything works.
 
-### 1. Instalação via pip (Recomendado)
+## Installation Methods
 
+### 1. pip (recommended)
 ```bash
-# Instalar diretamente do repositório
+# Install directly from GitHub
 pip install git+https://github.com/ThalesMMS/Dicom-Tools.git
 
-# Ou instalar do diretório local
+# Or install from a local checkout
 pip install .
 
-# Instalar em modo desenvolvimento (editable)
+# Development (editable) install
 pip install -e .
 ```
 
-### 2. Instalação Manual
-
+### 2. Manual setup
 ```bash
-# Clonar o repositório
 git clone https://github.com/ThalesMMS/Dicom-Tools.git
 cd Dicom-Tools
 
-# Criar ambiente virtual (recomendado)
 python -m venv .venv
-
-# Ativar ambiente virtual
 source .venv/bin/activate  # Linux/Mac
-# OU
-.venv\Scripts\activate     # Windows
+# .venv\Scripts\activate   # Windows
 
-# Instalar dependências
 pip install -r requirements.txt
-
-# Instalar o pacote
 pip install -e .
 ```
 
-### 3. Instalação com Funcionalidades Opcionais
-
+### 3. Optional feature sets
 ```bash
-# Instalar com ferramentas de desenvolvimento
+# Everything for development + optional libs (gdcm, SimpleITK, dicom-numpy)
 pip install -e ".[dev]"
 
-# Instalar apenas componentes web
+# Only web extras
 pip install -e ".[web]"
 
-# Instalar apenas componentes de networking
+# Only networking extras
 pip install -e ".[networking]"
 
-# Instalar tudo
-pip install -e ".[dev,web,networking]"
+# All optional runtime extras
+pip install -e ".[extra]"
 ```
 
-## Verificação da Instalação
+## Verify the Installation
 
-### Verificar comandos CLI instalados
-
+### CLI commands
 ```bash
-# Listar todos os comandos disponíveis
 dicom-info --help
 dicom-query --help
 dicom-web --help
-
-# Testar extração de metadados
-dicom-extract-metadata seu_arquivo.dcm
-
-# Iniciar interface web
-dicom-web
+dicom-volume --help
+dicom-to-nifti --help
+dicom-transcode --help
 ```
 
-### Verificar importação do módulo Python
-
+### Python import
 ```python
 import DICOM_reencoder
-print(DICOM_reencoder.__version__)
-
-# Usar funções programaticamente
 from DICOM_reencoder import anonymize_dicom
-anonymize_dicom.anonymize_dicom('input.dcm', 'output.dcm')
 ```
 
-## Comandos CLI Disponíveis
+## Available CLI Commands
 
-Após a instalação, os seguintes comandos estarão disponíveis globalmente:
+### Inspection & Metadata
+- `dicom-extract-metadata` – detailed metadata dump
+- `dicom-info` – quick summary
+- `dicom-compare` – compare two files
+- `dicom-pixel-stats` – pixel statistics
+- `dicom-validate` – compliance/integrity checks
+- `dicom-volume` – build a 3D NumPy volume + JSON metadata (dicom-numpy)
 
-### Inspeção e Metadados
-- `dicom-extract-metadata` - Extrai metadados detalhados
-- `dicom-info` - Informações resumidas
-- `dicom-compare` - Compara dois arquivos
+### Conversion
+- `dicom-reencode` – recode transfer syntax
+- `dicom-decompress` – decompress DICOM
+- `dicom-to-image` – convert to PNG/JPEG
+- `dicom-transcode` – change transfer syntax with GDCM
+- `dicom-to-nifti` – export series to NIfTI (SimpleITK)
+- `dicom-split-multiframe` – split multi-frame
 
-### Conversão
-- `dicom-reencode` - Recodifica transfer syntax
-- `dicom-decompress` - Descomprime DICOM
-- `dicom-to-image` - Converte para PNG/JPEG
+### Privacy
+- `dicom-anonymize` – anonymize files
 
-### Privacidade
-- `dicom-anonymize` - Anonimiza arquivos
+### Modification & Organization
+- `dicom-modify` – edit tags
+- `dicom-organize` – sort into folders
+- `dicom-search` – search by criteria
+- `dicom-batch` – batch processing
 
-### Validação
-- `dicom-validate` - Valida conformidade
-- `dicom-pixel-stats` - Estatísticas de pixels
+### Networking
+- `dicom-query` – C-FIND for PACS
+- `dicom-retrieve` – C-MOVE/C-GET from PACS
+- `dicom-echo` – C-ECHO (ping) for quick connectivity checks
 
-### Modificação
-- `dicom-modify` - Modifica tags
-- `dicom-organize` - Organiza arquivos
+### Web Interface
+- `dicom-web` – start the Flask UI
 
-### Pesquisa
-- `dicom-search` - Pesquisa por critérios
+## Quick Usage Examples
 
-### Multi-frame
-- `dicom-split-multiframe` - Divide multi-frame
-
-### Batch
-- `dicom-batch` - Processamento em lote
-
-### Networking (NOVO!)
-- `dicom-query` - C-FIND para PACS
-- `dicom-retrieve` - C-MOVE/C-GET de PACS
-
-### Web Interface (NOVO!)
-- `dicom-web` - Inicia servidor web
-
-## Exemplos de Uso Rápido
-
-### Interface Web
 ```bash
-# Iniciar servidor web na porta padrão (5000)
-dicom-web
+# Start the web UI
+dicom-web --host 0.0.0.0 --port 8080
 
-# Iniciar em porta customizada
-dicom-web -p 8080
+# Build a 3D volume and metadata from a folder
+dicom-volume ./input/series1 -o ./output/series1.npy
 
-# Permitir acesso externo
-dicom-web -H 0.0.0.0 -p 8080
+# Export a series to NIfTI
+dicom-to-nifti ./input/series1 -o ./output/series1.nii.gz
+
+# Transcode to Explicit VR Little Endian
+dicom-transcode input.dcm --syntax explicit -o output_explicit.dcm
+
+# PACS queries
+dicom-query -H pacs.example.com -p 11112 --patient-name "DOE*"
+dicom-retrieve -H pacs.example.com -p 11112 --study-uid 1.2.3.4.5 -o ./studies
 ```
 
-Acesse: http://localhost:5000
+## Dependencies
 
-### Query PACS
-```bash
-# Pesquisar estudos por paciente
-dicom-query -H pacs.hospital.com -p 11112 --patient-name "Silva*"
-
-# Pesquisar por modalidade
-dicom-query -H pacs.hospital.com -p 11112 --modality CT
-
-# Pesquisar por intervalo de datas
-dicom-query -H pacs.hospital.com -p 11112 --study-date 20240101-20241231
-```
-
-### Retrieve de PACS
-```bash
-# Buscar estudo usando C-GET
-dicom-retrieve -H pacs.hospital.com -p 11112 --study-uid 1.2.3.4.5 -o ./estudos
-
-# Buscar usando C-MOVE
-dicom-retrieve -H pacs.hospital.com -p 11112 --study-uid 1.2.3.4.5 --use-move --move-dest MYAE
-```
-
-### Processamento em Batch
-```bash
-# Anonimizar todos os arquivos de um diretório
-dicom-batch -d /path/dicoms -o anonymize --output-dir ./anonimizados
-
-# Validar todos os arquivos
-dicom-batch -d /path/dicoms -o validate
-```
-
-## Dependências
-
-### Obrigatórias
+### Required
 - Python >= 3.9
 - pydicom >= 2.3.0
 - numpy >= 1.20.0
 - Pillow >= 9.0.0
-- pynetdicom >= 2.0.0 (para networking)
-- flask >= 2.0.0 (para web interface)
+- pynetdicom >= 2.0.0
+- flask >= 2.0.0
 - flask-cors >= 3.0.0
 
-### Opcionais (Desenvolvimento)
-- pytest >= 7.0.0
-- pytest-cov >= 3.0.0
-- black >= 22.0.0
-- flake8 >= 4.0.0
+### Optional (for new features)
+- gdcm >= 3.0.0 (transfer syntax changes)
+- SimpleITK >= 2.2.0 (NIfTI export)
+- dicom-numpy >= 0.5.0 (3D volume builder)
 
-## Solução de Problemas
+## Troubleshooting
 
-### Erro: Comando não encontrado
-Se os comandos CLI não estiverem disponíveis após a instalação:
-
-```bash
-# Reinstalar com pip
-pip install --force-reinstall .
-
-# Verificar se os scripts estão no PATH
-which dicom-info  # Linux/Mac
-where dicom-info  # Windows
-```
-
-### Erro de Importação
-Se encontrar erros de importação:
-
-```bash
-# Reinstalar dependências
-pip install -r requirements.txt --force-reinstall
-
-# Verificar instalação do pydicom
-python -c "import pydicom; print(pydicom.__version__)"
-```
-
-### Problemas com pynetdicom
-Para recursos de networking (C-FIND, C-MOVE):
-
-```bash
-# Instalar/atualizar pynetdicom
-pip install --upgrade pynetdicom
-```
-
-### Problemas com Interface Web
-Se a interface web não iniciar:
-
-```bash
-# Instalar dependências web
-pip install flask flask-cors
-
-# Verificar porta disponível
-dicom-web -p 8080  # Tentar outra porta
-```
-
-## Desinstalação
-
-```bash
-# Desinstalar o pacote
-pip uninstall dicom-tools
-
-# Remover ambiente virtual (se usado)
-rm -rf .venv  # Linux/Mac
-rmdir /s .venv  # Windows
-```
-
-## Atualização
-
-```bash
-# Atualizar do repositório
-pip install --upgrade git+https://github.com/ThalesMMS/Dicom-Tools.git
-
-# Atualizar instalação local
-git pull
-pip install --upgrade .
-```
-
-## Configuração Avançada
-
-### Variáveis de Ambiente
-
-```bash
-# Diretório temporário para uploads web
-export DICOM_WEB_UPLOAD_DIR=/tmp/dicom_uploads
-
-# Tamanho máximo de arquivo (bytes)
-export DICOM_WEB_MAX_SIZE=104857600  # 100MB
-```
-
-### Configuração do PACS
-
-Para usar query/retrieve, você pode criar um arquivo de configuração:
-
-```bash
-# ~/.dicom-tools/pacs.conf
-[DEFAULT]
-host = pacs.hospital.com
-port = 11112
-aet = DICOM_TOOLS
-aec = PACS_SERVER
-```
-
-## Suporte
-
-Para problemas ou dúvidas:
-- Issues: https://github.com/ThalesMMS/Dicom-Tools/issues
-- Documentação: https://github.com/ThalesMMS/Dicom-Tools#readme
+- **Command not found:** reinstall with `pip install --force-reinstall .` and ensure your Python bin directory is on `PATH`.
+- **Missing optional library:** install with `pip install -r requirements.txt` or `pip install "dicom-tools[extra]"`.
+- **PACS connectivity issues:** run `dicom-echo <host> --port <p>` to verify that the port accepts associations.

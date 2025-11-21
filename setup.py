@@ -95,9 +95,15 @@ setup(
             # Batch Processing
             'dicom-batch=DICOM_reencoder.batch_process:main',
 
+            # Volume utilities
+            'dicom-volume=DICOM_reencoder.volume_builder:main',
+            'dicom-to-nifti=DICOM_reencoder.series_to_nifti:main',
+            'dicom-transcode=DICOM_reencoder.transcode_dicom:main',
+
             # DICOM Networking
             'dicom-query=DICOM_reencoder.dicom_query:main',
             'dicom-retrieve=DICOM_reencoder.dicom_retrieve:main',
+            'dicom-echo=DICOM_reencoder.dicom_echo:main',
 
             # Web Interface
             'dicom-web=DICOM_reencoder.web_interface:main',

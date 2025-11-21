@@ -1,7 +1,7 @@
 # DICOM Tools & Testing Grounds
 
 A comprehensive Python repository serving two main purposes:
-1.  **Functional Toolkit:** A suite of 17+ command-line interface (CLI) tools for inspecting, modifying, anonymizing, and managing DICOM files, plus a web interface.
+1.  **Functional Toolkit:** A suite of 20+ command-line interface (CLI) tools for inspecting, modifying, anonymizing, and managing DICOM files, plus a web interface.
 2.  **Testing Grounds:** A collection of isolated scripts to demonstrate and verify the capabilities of major Python DICOM libraries (`pydicom`, `pynetdicom`, `gdcm`, `SimpleITK`, `dicom-numpy`).
 
 ## 🛠 Installation
@@ -33,6 +33,7 @@ Once installed, the following commands are available globally in your terminal:
 - `dicom-compare <file1> <file2>`: Compare tags between two files.
 - `dicom-validate <file>`: Validate compliance and data integrity.
 - `dicom-search -d <dir> ...`: Search for files matching specific metadata criteria.
+- `dicom-volume <dir>`: Build a 3D NumPy volume and JSON metadata from a slice directory (powered by `dicom-numpy`).
 
 ### Manipulation & Processing
 - `dicom-anonymize <input> [output]`: Remove PHI (HIPAA-compliant).
@@ -40,15 +41,30 @@ Once installed, the following commands are available globally in your terminal:
 - `dicom-modify <file> -t Tag=Value`: Modify tags interactively or in batch.
 - `dicom-reencode <file>`: Rewrite file with Explicit VR Little Endian.
 - `dicom-decompress <file>`: Decompress pixel data.
+- `dicom-transcode <file> --syntax ...`: Change transfer syntax using GDCM (e.g., decompress to Explicit VR).
+- `dicom-to-nifti <dir>`: Export a DICOM series to `.nii`/`.nii.gz` with spacing/orientation preserved (SimpleITK).
 - `dicom-split-multiframe <file>`: Split multi-frame files into single frames.
 - `dicom-organize -s <src> -d <dst> ...`: Organize files into folders (Patient/Study/Series).
 
 ### PACS Networking
 - `dicom-query ...`: Perform C-FIND queries against a PACS server.
 - `dicom-retrieve ...`: Retrieve studies via C-MOVE or C-GET.
+- `dicom-echo [host] --port <p>`: Lightweight C-ECHO (DICOM ping) to verify connectivity.
 
 ### Web Interface
 - `dicom-web`: Launch a local Flask web server for visual interaction.
+
+### Notes on optional dependencies
+- `dicom-volume` requires `dicom-numpy`.
+- `dicom-to-nifti` requires `SimpleITK`.
+- `dicom-transcode` requires `gdcm`.
+
+Install all optional tooling with:
+```bash
+pip install -r requirements.txt
+# or
+pip install "dicom-tools[extra]"
+```
 
 ## 🧪 Library Testing Grounds
 
