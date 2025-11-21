@@ -20,3 +20,8 @@ dist/
 # macOS
 .DS_Store
 /.code
+
+# Project specific
+input/
+plan.md
+*.dcm
