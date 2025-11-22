@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# dicom_retrieve.py
+# Dicom-Tools-py
+#
+# Retrieves studies using C-MOVE or C-GET and writes received instances to disk.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 DICOM Retrieve (C-MOVE/C-GET) tool for retrieving studies from PACS.
 This script allows retrieving DICOM studies from PACS servers using
@@ -87,6 +95,7 @@ def create_retrieve_query(level, study_uid=None, series_uid=None, instance_uid=N
         ds.SeriesInstanceUID = series_uid
         ds.SOPInstanceUID = instance_uid
 
+    # Query/Retrieve operations fail silently when required identifiers are missing, so we enforce them early
     return ds
 
 
@@ -212,6 +221,7 @@ def retrieve_with_get(host, port, aet, aec, output_dir, query_dataset,
     print(f"{'='*80}\n")
 
     # Set up event handler for C-STORE
+    # Register a minimal C-STORE handler to capture incoming instances to disk
     handlers = [(evt.EVT_C_STORE, lambda event: handle_store(event, output_dir))]
 
     # Associate with peer AE

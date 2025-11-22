@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# organize_dicom.py
+# Dicom-Tools-py
+#
+# Organizes DICOM files into directory hierarchies by patient, study, series, or modality.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Organize DICOM files into a structured directory hierarchy.
 This script organizes DICOM files by patient, study, series, or modality,
@@ -41,6 +49,7 @@ def sanitize_filename(name):
     if len(name) > 100:
         name = name[:100]
 
+    # Fall back to a predictable placeholder when nothing remains
     return name if name else 'Unknown'
 
 def organize_by_patient(source_dir, dest_dir, copy_mode=False, recursive=False):
@@ -63,6 +72,7 @@ def organize_by_patient(source_dir, dest_dir, copy_mode=False, recursive=False):
 
     for file_path in files:
         try:
+            # Skip reading heavy pixel buffers; we only need header tags to sort files
             dataset = pydicom.dcmread(file_path, stop_before_pixels=True, force=True)
 
             patient_name = sanitize_filename(dataset.get('PatientName', 'Unknown'))
@@ -117,7 +127,7 @@ def organize_by_study(source_dir, dest_dir, copy_mode=False, recursive=False):
             study_date = sanitize_filename(dataset.get('StudyDate', 'Unknown'))
             study_desc = sanitize_filename(dataset.get('StudyDescription', 'Study'))
 
-            # Create directory structure
+            # Build a date/description folder to keep related instances together
             study_folder = f"{study_date}_{study_desc}"
             study_dir = os.path.join(dest_dir, patient_name, study_folder)
             os.makedirs(study_dir, exist_ok=True)
@@ -178,13 +188,13 @@ def organize_by_series(source_dir, dest_dir, copy_mode=False, recursive=False):
             base_name = os.path.basename(file_path)
             name, ext = os.path.splitext(base_name)
 
-            # Try to use instance number in filename for better sorting
+            # Use the instance number when available so files sort in acquisition order
             if instance_num:
                 dest_file = os.path.join(series_dir, f"{int(instance_num):04d}{ext}")
             else:
                 dest_file = os.path.join(series_dir, base_name)
 
-            # Handle duplicates
+            # Avoid clobbering existing files by incrementing a suffix when needed
             counter = 1
             original_dest = dest_file
             while os.path.exists(dest_file):

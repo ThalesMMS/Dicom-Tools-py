@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# series_to_nifti.py
+# Dicom-Tools-py
+#
+# Converts a DICOM series directory into a NIfTI volume using SimpleITK.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Convert a DICOM series into a NIfTI volume using SimpleITK.
 
@@ -62,6 +70,7 @@ def convert_series_to_nifti(series_dir: Path, *, series_uid: str | None = None, 
         found = ", ".join(series_ids)
         raise RuntimeError(f"Series UID {target_uid} not found in {series_dir}. Available: {found}")
 
+    # Let SimpleITK decide ordering to honor slice spacing/orientation
     file_names = reader.GetGDCMSeriesFileNames(str(series_dir), target_uid)
     reader.SetFileNames(file_names)
     image = reader.Execute()

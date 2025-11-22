@@ -1,3 +1,11 @@
+#
+# __init__.py
+# Dicom-Tools-py
+#
+# Exports shared modules and package metadata for the DICOM Tools suite.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 DICOM Tools - Comprehensive DICOM utilities for medical imaging.
 

@@ -1,3 +1,11 @@
+#
+# test_gdcm.py
+# Dicom-Tools-py
+#
+# Checks that GDCM reads synthetic DICOM files and exposes pixel buffers correctly.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 import pytest
 
 
@@ -5,6 +13,7 @@ gdcm = pytest.importorskip("gdcm")
 
 
 def test_gdcm_reads_synthetic_dicom(synthetic_dicom_path):
+    # GDCM should be able to parse and expose pixel buffers for generated fixtures
     reader = gdcm.ImageReader()
     reader.SetFileName(str(synthetic_dicom_path))
     assert reader.Read()

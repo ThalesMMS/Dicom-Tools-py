@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# web_interface.py
+# Dicom-Tools-py
+#
+# Serves the Flask-based web UI for uploading, previewing, anonymizing, and validating DICOM files.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """Flask-powered web interface for the DICOM toolkit."""
 
 import argparse
@@ -28,6 +36,7 @@ app.config["ALLOWED_EXTENSIONS"] = {"dcm", "dicom"}
 
 
 def allowed_file(filename: str) -> bool:
+    # Basic extension guard; deeper checks happen when pydicom parses the upload
     return "." in filename and filename.rsplit(".", 1)[1].lower() in app.config["ALLOWED_EXTENSIONS"]
 
 
@@ -40,6 +49,7 @@ def _load_uploaded(filename: str):
     if not path.exists():
         return None, (jsonify({"error": "File not found"}), 404)
     try:
+        # Use the shared loader so the web API matches CLI behavior
         return load_dataset(path, force=True), None
     except Exception as exc:  # pragma: no cover - surfaced to client
         return None, (jsonify({"error": str(exc)}), 400)

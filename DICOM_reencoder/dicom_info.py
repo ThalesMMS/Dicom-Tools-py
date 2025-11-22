@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# dicom_info.py
+# Dicom-Tools-py
+#
+# Prints human-readable summaries of DICOM metadata and pixel characteristics.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Display quick summary information about DICOM files.
 This script provides a concise overview of DICOM file contents,
@@ -12,6 +20,7 @@ from datetime import datetime
 
 def format_bytes(size):
     """Format byte size to human-readable format."""
+    # Simple unit walker that stops at the first size under 1024
     for unit in ['B', 'KB', 'MB', 'GB']:
         if size < 1024.0:
             return f"{size:.2f} {unit}"
@@ -58,6 +67,7 @@ def display_dicom_info(file_path, verbose=False):
         file_size = os.path.getsize(file_path)
 
         # Read DICOM file
+        # `force=True` prevents failures on slightly non-compliant files often found in the wild
         dataset = pydicom.dcmread(file_path, force=True)
 
         print(f"\n{'='*80}")

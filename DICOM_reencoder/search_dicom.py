@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# search_dicom.py
+# Dicom-Tools-py
+#
+# Searches DICOM files by metadata criteria with wildcard and regex support.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Search DICOM files based on metadata criteria.
 This script allows searching through DICOM files to find those matching
@@ -46,6 +54,7 @@ def search_dicom_files(directory, criteria, recursive=False, output_format='tabl
         for file_path in glob.glob(os.path.join(directory, '*')):
             if os.path.isfile(file_path) and not file_path.endswith('.dcm'):
                 try:
+                    # Try to sniff header information without loading pixel data
                     pydicom.dcmread(file_path, stop_before_pixels=True, force=True)
                     all_files.append(file_path)
                 except:
@@ -58,6 +67,7 @@ def search_dicom_files(directory, criteria, recursive=False, output_format='tabl
 
     for file_path in all_files:
         try:
+            # Load header only; skipping pixel buffers keeps the search fast
             dataset = pydicom.dcmread(file_path, stop_before_pixels=True, force=True)
 
             # Check if all criteria match
@@ -227,6 +237,7 @@ def search_by_date_range(directory, start_date, end_date, recursive=False):
     matching_files = []
 
     try:
+        # Parse dates upfront so invalid formats fail fast
         start = datetime.strptime(start_date, '%Y%m%d')
         end = datetime.strptime(end_date, '%Y%m%d')
     except ValueError:

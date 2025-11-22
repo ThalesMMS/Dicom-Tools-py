@@ -1,3 +1,11 @@
+#
+# factories.py
+# Dicom-Tools-py
+#
+# Creates synthetic DICOM datasets and series used in tests and demonstrations.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """Synthetic dataset creation helpers used in tests and demos."""
 
 from datetime import datetime, timezone
@@ -11,6 +19,7 @@ from pydicom.uid import CTImageStorage, ExplicitVRLittleEndian, generate_uid
 
 
 def _base_file_meta() -> Dataset:
+    # Minimal file meta block that lets GDCM/Pydicom understand the dataset layout
     meta = Dataset()
     meta.MediaStorageSOPClassUID = CTImageStorage
     meta.TransferSyntaxUID = ExplicitVRLittleEndian
@@ -52,6 +61,7 @@ def build_slice(rows: int, cols: int, position: Tuple[float, float, float], *,
     ds.BitsStored = 16
     ds.HighBit = 15
 
+    # Populate the pixel buffer with deterministic values so tests can make strong assertions
     pixel_values = np.arange(rows * cols, dtype=np.uint16).reshape((rows, cols)) + instance
     ds.PixelData = pixel_values.tobytes()
     return ds
@@ -75,4 +85,5 @@ def build_synthetic_series(output_dir: Path, *, slices: int = 4, shape: Tuple[in
         ds.save_as(file_path)
         paths.append(file_path)
 
+    # Return the on-disk paths so callers can feed them directly into readers
     return paths

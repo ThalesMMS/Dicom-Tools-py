@@ -18,6 +18,7 @@ const validateBtn = document.getElementById('validateBtn');
 const buttons = [metaBtn, statsBtn, anonymizeBtn, validateBtn];
 
 function setStatus(message, tone = 'info') {
+  // Map status updates to CSS classes for subtle color changes
   statusBar.textContent = message;
   statusBar.className = `status-bar ${tone === 'error' ? 'error' : tone === 'success' ? 'success' : ''}`;
 }
@@ -29,6 +30,7 @@ function enableActions(enabled) {
 }
 
 function renderMetadata(data) {
+  // Flatten nested metadata sections into cards grouped by category
   const groups = [
     ['Patient', data.patient],
     ['Study', data.study],
@@ -49,6 +51,7 @@ function renderMetadata(data) {
 }
 
 function renderStats(data) {
+  // Present key statistics in a lightweight grid instead of a big table
   const entries = [
     ['Min', data.min],
     ['Max', data.max],

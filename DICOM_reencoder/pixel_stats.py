@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# pixel_stats.py
+# Dicom-Tools-py
+#
+# Calculates and compares statistical metrics for DICOM pixel data, with optional histograms.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Analyze and display pixel data statistics from DICOM files.
 This script provides detailed statistical analysis of pixel values,
@@ -33,6 +41,7 @@ def display_statistics(input_file, frame_number=0, show_histogram=False):
 
         # Get pixel array
         pixel_array = dataset.pixel_array
+        # Accessing pixel_array triggers decompression; do it once and reuse the result
 
         print(f"{'='*80}")
         print(f"Pixel Data Statistics")
@@ -146,7 +155,7 @@ def display_histogram(pixel_array, bins=20):
         bin_end = bin_edges[i + 1]
         count = hist[i]
 
-        # Scale bar
+        # Scale bar height relative to the busiest bin so the graph fits the console
         if max_count > 0:
             bar_len = int((count / max_count) * bar_width)
         else:

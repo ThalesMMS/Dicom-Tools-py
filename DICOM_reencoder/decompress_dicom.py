@@ -1,3 +1,11 @@
+#
+# decompress_dicom.py
+# Dicom-Tools-py
+#
+# Decompresses DICOM files to explicit VR little endian to improve viewer compatibility.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 import sys
 import pydicom
 from pydicom.uid import ExplicitVRLittleEndian
@@ -18,7 +26,7 @@ def main():
         print(f"Error: File {input_file} not found.")
         sys.exit(1)
 
-    # Ensure the image is decompressed
+    # Only run the (potentially expensive) decompress step when the transfer syntax says it's needed
     if dataset.file_meta.TransferSyntaxUID.is_compressed:
         try:
             dataset.decompress()
@@ -26,7 +34,7 @@ def main():
             print(f"Error decompressing: {e}")
             sys.exit(1)
 
-    # Update metadata to an uncompressed syntax
+    # Advertise the uncompressed syntax so downstream viewers open the file correctly
     dataset.file_meta.TransferSyntaxUID = ExplicitVRLittleEndian
 
     # Save a new version readable by OsiriX

@@ -1,3 +1,4 @@
+/* Color system tuned for the dark, neon-inspired UI */
 :root {
   --bg: #0f172a;
   --surface: #0b1224;
@@ -11,6 +12,7 @@
 
 * { box-sizing: border-box; }
 
+/* Global page baseline */
 body.page {
   margin: 0;
   padding: 0;
@@ -22,6 +24,7 @@ body.page {
   min-height: 100vh;
 }
 
+/* Intro section holding the headline and stats badges */
 .hero {
   display: flex;
   align-items: flex-start;
@@ -74,6 +77,7 @@ body.page {
 
 .actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
 
+/* Drag-and-drop target styling */
 .dropzone {
   margin-top: 14px;
   padding: 34px;

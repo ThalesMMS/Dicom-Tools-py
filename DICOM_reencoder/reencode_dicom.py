@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# reencode_dicom.py
+# Dicom-Tools-py
+#
+# Rewrites a DICOM file to explicit VR little endian without altering pixel data.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 import sys
 import pydicom
 from pydicom.uid import ExplicitVRLittleEndian
@@ -19,7 +27,7 @@ def main():
         print(f"Error: File {input_file} not found.")
         sys.exit(1)
 
-    # Define new Transfer Syntax
+    # Force the dataset to advertise Explicit VR Little Endian so downstream tools can parse it
     dataset.file_meta.TransferSyntaxUID = ExplicitVRLittleEndian
 
     # Save as new file

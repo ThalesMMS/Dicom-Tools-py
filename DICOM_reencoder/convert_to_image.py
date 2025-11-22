@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# convert_to_image.py
+# Dicom-Tools-py
+#
+# Converts DICOM pixel data into standard image formats with windowing and frame selection support.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Convert DICOM files to standard image formats (PNG, JPEG).
 This script extracts pixel data from DICOM files and saves them as
@@ -34,6 +42,7 @@ def auto_window(pixel_array):
     """
     Automatically determine window settings based on pixel data statistics.
     """
+    # Use median/percentiles to avoid being skewed by outliers
     window_center = int(np.median(pixel_array))
     window_width = int(np.percentile(pixel_array, 95) - np.percentile(pixel_array, 5))
 

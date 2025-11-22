@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# batch_process.py
+# Dicom-Tools-py
+#
+# Offers batch operations for DICOM directories, including listing, decompression, anonymization, conversion, and validation.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Batch process DICOM files in a directory.
 This script allows applying various operations to multiple DICOM files at once,
@@ -38,7 +46,7 @@ def find_dicom_files(directory, recursive=False):
         for file_path in glob.glob(os.path.join(directory, '*')):
             if os.path.isfile(file_path) and not any(file_path.endswith(ext) for ext in ['.dcm', '.DCM', '.dicom', '.DICOM']):
                 try:
-                    # Try to read as DICOM
+                    # Try to read as DICOM using header only; avoids loading large pixel data accidentally
                     pydicom.dcmread(file_path, stop_before_pixels=True, force=True)
                     dicom_files.append(file_path)
                 except:
@@ -211,9 +219,9 @@ def list_files(files):
             patient_id = dataset.get('PatientID', 'N/A')
             study_date = dataset.get('StudyDate', 'N/A')
 
-            print(f"[{i:3d}] {os.path.basename(file_path)}")
-            print(f"      Size: {file_size:,} bytes | Modality: {modality} | "
-                  f"Patient: {patient_id} | Date: {study_date}")
+        print(f"[{i:3d}] {os.path.basename(file_path)}")
+        print(f"      Size: {file_size:,} bytes | Modality: {modality} | "
+              f"Patient: {patient_id} | Date: {study_date}")
 
         except Exception as e:
             print(f"[{i:3d}] {os.path.basename(file_path)} - Error: {e}")

@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# transcode_dicom.py
+# Dicom-Tools-py
+#
+# Transcodes DICOM transfer syntaxes using GDCM for compatibility conversions.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Transcode DICOM files between transfer syntaxes using GDCM.
 
@@ -20,6 +28,7 @@ def _require_gdcm():
 
 def _transfer_syntax(gdcm, name: str):
     name = name.lower()
+    # Map friendly names to gdcm.TransferSyntax constants
     mapping = {
         "explicit": gdcm.TransferSyntax(gdcm.TransferSyntax.ExplicitVRLittleEndian),
         "implicit": gdcm.TransferSyntax(gdcm.TransferSyntax.ImplicitVRLittleEndian),
@@ -49,6 +58,7 @@ def transcode(input_path: Path, *, output: Path | None = None, syntax: str = "ex
     if not changer.Change():
         raise RuntimeError(f"Failed to transcode {input_path} to {syntax}")
 
+    # Default output adds the target syntax to the filename to avoid overwriting the source
     output_path = output or input_path.with_name(f"{input_path.stem}_{syntax}.dcm")
     writer = gdcm.ImageWriter()
     writer.SetFile(reader.GetFile())

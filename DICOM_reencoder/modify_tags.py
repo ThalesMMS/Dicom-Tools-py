@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# modify_tags.py
+# Dicom-Tools-py
+#
+# Enables interactive or scripted modification of DICOM tags while keeping file structure intact.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Modify specific DICOM tags in a file.
 This script allows selective modification of DICOM metadata tags
@@ -25,6 +33,7 @@ def modify_tag(dataset, tag_name, new_value):
     try:
         if tag_name in dataset:
             old_value = dataset.get(tag_name)
+            # Updating in-place preserves VR/VM handling managed by pydicom
             dataset.data_element(tag_name).value = new_value
             print(f"  ✓ Modified {tag_name}")
             print(f"    Old value: {old_value}")
@@ -69,6 +78,7 @@ def modify_tags_interactive(input_file, output_file=None):
         print("Format: TagName=NewValue")
         print("Type 'done' when finished, 'list' to see current values\n")
 
+        # Queue user-requested modifications and replay them after the prompt finishes
         modifications = []
 
         while True:

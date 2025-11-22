@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# extract_metadata.py
+# Dicom-Tools-py
+#
+# Reads a DICOM file and displays detailed metadata across patient, study, series, and image sections.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Extract and display detailed DICOM metadata.
 This script reads a DICOM file and displays comprehensive metadata information
@@ -12,6 +20,7 @@ from datetime import datetime
 
 def format_value(value):
     """Format DICOM values for better readability."""
+    # DICOM stores many fields as multi-values or raw bytes; normalize them for display
     if isinstance(value, pydicom.multival.MultiValue):
         return ', '.join(str(v) for v in value)
     elif isinstance(value, bytes):

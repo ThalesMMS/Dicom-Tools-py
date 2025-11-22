@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# split_multiframe.py
+# Dicom-Tools-py
+#
+# Splits multi-frame DICOM datasets into single-frame files and inspects frame metadata.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Split multi-frame DICOM files into single-frame files.
 This script takes a multi-frame DICOM file and creates separate
@@ -62,13 +70,13 @@ def split_multiframe(input_file, output_dir=None, prefix=None):
         print(f"\nSplitting into: {output_dir}")
         print(f"{'='*80}\n")
 
-        # Get original series UID for consistency
+        # Keep track of the original series so the resulting files remain grouped logically
         original_series_uid = dataset.get('SeriesInstanceUID', generate_uid())
 
         # Split frames
         for frame_idx in range(num_frames):
             try:
-                # Create a copy of the dataset for this frame
+                # Clone the header so each output frame retains the original metadata
                 frame_dataset = dataset.copy()
 
                 # Extract this frame's pixel data
@@ -92,6 +100,7 @@ def split_multiframe(input_file, output_dir=None, prefix=None):
 
                 # Update file meta information
                 if hasattr(frame_dataset, 'file_meta'):
+                    # Refresh file meta so each slice is self-contained and uncompressed
                     frame_dataset.file_meta.MediaStorageSOPInstanceUID = frame_dataset.SOPInstanceUID
                     frame_dataset.file_meta.TransferSyntaxUID = ExplicitVRLittleEndian
 

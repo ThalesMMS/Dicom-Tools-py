@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# dicom_query.py
+# Dicom-Tools-py
+#
+# Builds and executes C-FIND queries against PACS servers at patient, study, or series levels.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 DICOM Query (C-FIND) tool for querying DICOM servers.
 This script allows querying PACS servers using the DICOM C-FIND protocol.
@@ -32,6 +40,7 @@ def create_patient_query(patient_name=None, patient_id=None):
     ds.PatientBirthDate = ''
     ds.PatientSex = ''
 
+    # Leaving most fields blank tells the SCP to return them if available
     return ds
 
 
@@ -60,6 +69,7 @@ def create_study_query(patient_name=None, patient_id=None, study_date=None,
     ds.NumberOfStudyRelatedSeries = ''
     ds.NumberOfStudyRelatedInstances = ''
 
+    # Include common study-level attributes so the response is populated with useful columns
     return ds
 
 
@@ -82,6 +92,7 @@ def create_series_query(study_instance_uid, modality=None, series_description=No
     ds.SeriesTime = ''
     ds.NumberOfSeriesRelatedInstances = ''
 
+    # Series queries must carry the parent study UID or they will not match anything
     return ds
 
 

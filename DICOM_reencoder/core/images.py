@@ -1,3 +1,11 @@
+#
+# images.py
+# Dicom-Tools-py
+#
+# Processes DICOM pixel arrays for windowing, statistics, and PNG generation.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """Pixel-data helpers shared by the CLI, web API, and tests."""
 
 from io import BytesIO
@@ -15,6 +23,7 @@ def get_frame(dataset: Dataset, frame_index: int = 0) -> np.ndarray:
     if pixels.ndim > 2:
         if frame_index >= pixels.shape[0]:
             raise IndexError(f"Frame {frame_index} out of range for {pixels.shape[0]} frames")
+        # Multi-frame datasets store frames along the first axis; slice out the requested one
         return np.asarray(pixels[frame_index])
     return np.asarray(pixels)
 
@@ -43,6 +52,7 @@ def calculate_statistics(pixel_array: np.ndarray) -> dict:
 
     stats["range"] = stats["max"] - stats["min"]
     stats["iqr"] = stats["p75"] - stats["p25"]
+    # Guard against divide-by-zero when all pixels are zero
     stats["zero_percent"] = (stats["zero_pixels"] / max(stats["total_pixels"], 1)) * 100
     return stats
 
@@ -72,6 +82,7 @@ def window_frame(dataset: Dataset, frame_index: int = 0, *, window_center: Optio
     frame = get_frame(dataset, frame_index)
     center, width = window_center, window_width
     if center is None or width is None:
+        # If no manual window is supplied, derive one from tags or pixel statistics
         center, width = _derive_window(dataset, frame)
 
     img_min = center - width // 2
@@ -80,6 +91,7 @@ def window_frame(dataset: Dataset, frame_index: int = 0, *, window_center: Optio
     scaled = ((windowed - img_min) / max(img_max - img_min, 1) * 255.0).astype(np.uint8)
 
     if dataset.get("PhotometricInterpretation") == "MONOCHROME1":
+        # MONOCHROME1 stores darker pixels as higher values, so invert for display
         scaled = 255 - scaled
 
     return scaled

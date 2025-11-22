@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# volume_builder.py
+# Dicom-Tools-py
+#
+# Builds 3D numpy volumes and affine matrices from DICOM slices via dicom-numpy.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Construct a 3D volume from a directory of DICOM slices using dicom-numpy.
 
@@ -42,6 +50,7 @@ def _load_sorted_datasets(dicom_dir: Path) -> List[pydicom.dataset.Dataset]:
         except Exception as exc:  # noqa: BLE001
             raise RuntimeError(f"Failed to read {path}: {exc}") from exc
 
+    # Sort slices using InstanceNumber to preserve correct anatomical order
     datasets.sort(key=lambda ds: getattr(ds, "InstanceNumber", 0))
     return datasets
 
@@ -64,6 +73,7 @@ def build_volume(dicom_dir: Path) -> Tuple[np.ndarray, np.ndarray, dict]:
         raise RuntimeError(f"Failed to combine slices: {exc}") from exc
 
     first = datasets[0]
+    # Combine in-plane spacing with slice thickness to fully describe voxel size
     spacing = list(getattr(first, "PixelSpacing", [1.0, 1.0]))
     spacing.append(float(getattr(first, "SliceThickness", 1.0)))
 

@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# validate_dicom.py
+# Dicom-Tools-py
+#
+# Validates DICOM files for required metadata, pixel integrity, and formatting issues.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Validate DICOM files for conformance and integrity.
 This script checks DICOM files for proper structure, required tags,
@@ -56,6 +64,7 @@ class DicomValidator:
 
         # Try to read the file
         try:
+            # `force=True` lets us surface more actionable errors on slightly malformed files
             dataset = pydicom.dcmread(file_path, force=True)
         except Exception as e:
             self.errors.append(f"Failed to read DICOM file: {e}")
@@ -101,6 +110,7 @@ class DicomValidator:
                 prefix = f.read(4)
 
                 if prefix != b'DICM':
+                    # Some writers omit the preamble; warn instead of failing to keep validation informative
                     self.warnings.append("Missing 'DICM' prefix (file may be implicit format)")
                 else:
                     self.info.append("✓ Valid DICOM prefix found")
@@ -109,6 +119,7 @@ class DicomValidator:
 
     def _validate_file_meta(self, file_meta):
         """Validate file meta information."""
+        # Minimal set of tags required by Part 10 to describe the encapsulated dataset
         required_meta = [
             'FileMetaInformationGroupLength',
             'FileMetaInformationVersion',
@@ -193,6 +204,7 @@ class DicomValidator:
 
             # Try to access pixel array
             try:
+                # Accessing pixel_array forces decompression and reveals shape/dtype issues early
                 pixel_array = dataset.pixel_array
                 shape = pixel_array.shape
                 dtype = pixel_array.dtype

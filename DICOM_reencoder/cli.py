@@ -1,3 +1,11 @@
+#
+# cli.py
+# Dicom-Tools-py
+#
+# Supplies the unified command-line entry point that wires high-level DICOM utilities to subcommands.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """Unified CLI front-end for DICOM Tools."""
 
 import argparse
@@ -19,6 +27,7 @@ def cmd_summary(args: argparse.Namespace) -> None:
         print(json.dumps(summary, indent=2))
         return
 
+    # Keep the human-readable output compact so it fits nicely in terminals
     print("Patient  ", summary["patient"])
     print("Study    ", summary["study"])
     print("Series   ", summary["series"])
@@ -28,6 +37,7 @@ def cmd_summary(args: argparse.Namespace) -> None:
 def cmd_stats(args: argparse.Namespace) -> None:
     dataset = load_dataset(args.file)
     stats = calculate_statistics(dataset.pixel_array if dataset.pixel_array.ndim == 2 else dataset.pixel_array[0])
+    # Sorted keys provide deterministic ordering between runs
     for key in sorted(stats.keys()):
         print(f"{key:>12}: {stats[key]}")
 

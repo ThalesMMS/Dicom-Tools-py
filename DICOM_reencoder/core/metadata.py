@@ -1,9 +1,18 @@
+#
+# metadata.py
+# Dicom-Tools-py
+#
+# Extracts and summarizes DICOM metadata into lightweight dictionaries.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """Metadata extraction helpers."""
 
 from pydicom.dataset import Dataset
 
 
 def _stringify(dataset: Dataset, key: str, default: str = "N/A") -> str:
+    # Convert tag values to strings while tolerating missing attributes
     value = dataset.get(key, default)
     return str(value) if value is not None else default
 

@@ -1,4 +1,12 @@
 #!/usr/bin/env python3
+#
+# anonymize_dicom.py
+# Dicom-Tools-py
+#
+# Provides anonymization utilities that strip PHI from DICOM datasets while preserving clinical content.
+#
+# Thales Matheus Mendonça Santos - November 2025
+
 """
 Anonymize DICOM files by removing or replacing patient identifiable information.
 This script creates an anonymized copy of a DICOM file, removing PHI (Protected Health Information)
@@ -62,6 +70,7 @@ def anonymize_dicom(input_file, output_file=None, patient_prefix="ANON"):
 
         for tag, value in patient_tags_to_anonymize.items():
             if tag in dataset:
+                # Replace sensitive tag values with neutral placeholders
                 dataset.data_element(tag).value = value
                 print(f"  ✓ Anonymized: {tag}")
 
@@ -93,6 +102,7 @@ def anonymize_dicom(input_file, output_file=None, patient_prefix="ANON"):
         for tag, value in study_tags_to_anonymize.items():
             if tag in dataset:
                 if value is None:
+                    # Some tags are sequences that are safer to drop entirely
                     delattr(dataset, tag)
                 else:
                     dataset.data_element(tag).value = value
